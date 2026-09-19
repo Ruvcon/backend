@@ -31,7 +31,7 @@ class TaskRepository:
 
     def get_by_id(self, task_id: int) -> Task | None:
         """Devuelve una tarea por id, o None si no existe."""
-        raise NotImplementedError("TODO: implementar get_by_id")
+        return self.session.get(Task, task_id)
 
     def create(self, title: str) -> Task:
         """Crea una tarea y devuelve la instancia persistida (con id y fecha)."""
