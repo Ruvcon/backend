@@ -40,7 +40,11 @@ class TaskService:
 
     def delete_task(self, task_id: int) -> bool:
         # Pista: devolvé True si existía y se borró, False si no.
-        raise NotImplementedError("TODO: implementar delete_task")
+        task = self.repository.get_by_id(task_id)
+        if task is None:
+            return False
+        self.repository.delete(task)
+        return True
 
     def count_tasks(self) -> int:
         # EJEMPLO resuelto — el health check usa este método.
