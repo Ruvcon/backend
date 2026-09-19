@@ -28,7 +28,7 @@ router = APIRouter(prefix="/api/tasks", tags=["tasks"])
 
 @router.get("", response_model=list[TaskRead])
 def list_tasks(service: TaskService = Depends(get_task_service)):
-    raise NotImplementedError("TODO: implementar list_tasks")
+  return service.list_tasks()
 
 
 # TODO: agregá acá los endpoints que faltan:
@@ -44,3 +44,7 @@ def list_tasks(service: TaskService = Depends(get_task_service)):
 #           status_code=status.HTTP_404_NOT_FOUND,
 #           detail=f"Tarea {task_id} no encontrada",
 #       )
+
+@router.post("", response_model=TaskRead, status_code=status.HTTP_201_CREATED)
+def create_task(body: TaskCreate, service: TaskService = Depends(get_task_service)):
+  return service.create_task(body)
