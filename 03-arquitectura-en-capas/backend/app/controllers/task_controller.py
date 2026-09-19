@@ -72,3 +72,12 @@ def update_task(
       detail=f"Tarea {task_id} no encontrada",
     )
   return task
+
+@router.delete("/{task_id}")
+def delete_task(task_id: int, service: TaskService = Depends(get_task_service)):
+  if not service.delete_task(task_id):
+    raise HTTPException(
+      status_code=status.HTTP_404_NOT_FOUND,
+      detail=f"Tarea {task_id} no encontrada",
+    )
+  return {"ok": True}
