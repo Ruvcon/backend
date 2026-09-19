@@ -21,7 +21,7 @@ class TaskService:
         self.repository = repository
 
     def list_tasks(self) -> list[Task]:
-        raise NotImplementedError("TODO: implementar list_tasks")
+        return self.repository.list_all()
 
     def get_task(self, task_id: int) -> Task | None:
         raise NotImplementedError("TODO: implementar get_task")
