@@ -26,7 +26,8 @@ class TaskRepository:
 
     def list_all(self) -> list[Task]:
         """Devuelve todas las tareas ordenadas por id."""
-        raise NotImplementedError("TODO: implementar list_all")
+        statement = select(Task).order_by(Task.id)
+        return self.session.exec(statement).all()
 
     def get_by_id(self, task_id: int) -> Task | None:
         """Devuelve una tarea por id, o None si no existe."""
