@@ -33,7 +33,10 @@ class TaskService:
 
     def update_task(self, task_id: int, body: TaskUpdate) -> Task | None:
         # Pista: si no existe, devolvé None. Si existe, actualizá.
-        raise NotImplementedError("TODO: implementar update_task")
+        task = self.repository.get_by_id(task_id)
+        if task is None:
+            return None
+        return self.repository.update(task, body)
 
     def delete_task(self, task_id: int) -> bool:
         # Pista: devolvé True si existía y se borró, False si no.
