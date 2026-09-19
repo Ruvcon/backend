@@ -58,3 +58,17 @@ def get_task(task_id: int, service: TaskService = Depends(get_task_service)):
       detail=f"Tarea {task_id} no encontrada",
     )
   return task
+
+@router.patch("/{task_id}", response_model=TaskRead)
+def update_task(
+  task_id: int,
+  body: TaskUpdate,
+  service: TaskService = Depends(get_task_service),
+):
+  task = service.update_task(task_id, body)
+  if task is None:
+    raise HTTPException(
+      status_code=status.HTTP_404_NOT_FOUND,
+      detail=f"Tarea {task_id} no encontrada",
+    )
+  return task
