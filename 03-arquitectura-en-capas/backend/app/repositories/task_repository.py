@@ -51,7 +51,8 @@ class TaskRepository:
     
     def delete(self, task: Task) -> None:
         """Borra la tarea de la base."""
-        raise NotImplementedError("TODO: implementar delete")
+        self.session.delete(task)
+        self.session.commit()
 
     def count(self) -> int:
         # EJEMPLO resuelto — te sirve de referencia para los demás.
