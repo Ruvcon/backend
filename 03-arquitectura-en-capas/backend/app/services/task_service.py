@@ -29,7 +29,7 @@ class TaskService:
     def create_task(self, body: TaskCreate) -> Task:
         # Pista: normalizá el título con .strip() antes de crear.
         # Esa es una REGLA DE NEGOCIO, por eso vive acá (no en el controller).
-        raise NotImplementedError("TODO: implementar create_task")
+        return self.repository.create(body.title.strip())
 
     def update_task(self, task_id: int, body: TaskUpdate) -> Task | None:
         # Pista: si no existe, devolvé None. Si existe, actualizá.
