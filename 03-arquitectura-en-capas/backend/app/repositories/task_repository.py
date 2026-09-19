@@ -42,8 +42,13 @@ class TaskRepository:
         return task
     def update(self, task: Task, data: TaskUpdate) -> Task:
         """Actualiza SOLO los campos enviados y devuelve la tarea."""
-        raise NotImplementedError("TODO: implementar update")
-
+        for field, value in data.model_dump(exclude_unset=True).items():
+            setattr(task, field, value)
+        self.session.add(task)
+        self.session.commit()
+        self.session.refresh(task)
+        return task
+    
     def delete(self, task: Task) -> None:
         """Borra la tarea de la base."""
         raise NotImplementedError("TODO: implementar delete")
