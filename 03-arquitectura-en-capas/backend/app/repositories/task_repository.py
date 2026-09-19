@@ -35,8 +35,11 @@ class TaskRepository:
 
     def create(self, title: str) -> Task:
         """Crea una tarea y devuelve la instancia persistida (con id y fecha)."""
-        raise NotImplementedError("TODO: implementar create")
-
+        task = Task(title=title)
+        self.session.add(task)
+        self.session.commit()
+        self.session.refresh(task)      
+        return task
     def update(self, task: Task, data: TaskUpdate) -> Task:
         """Actualiza SOLO los campos enviados y devuelve la tarea."""
         raise NotImplementedError("TODO: implementar update")
