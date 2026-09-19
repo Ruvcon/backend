@@ -48,3 +48,13 @@ def list_tasks(service: TaskService = Depends(get_task_service)):
 @router.post("", response_model=TaskRead, status_code=status.HTTP_201_CREATED)
 def create_task(body: TaskCreate, service: TaskService = Depends(get_task_service)):
   return service.create_task(body)
+
+@router.get("/{task_id}", response_model=TaskRead)
+def get_task(task_id: int, service: TaskService = Depends(get_task_service)):
+  task = service.get_task(task_id)
+  if task is None:
+    raise HTTPException(
+      status_code=status.HTTP_404_NOT_FOUND,
+      detail=f"Tarea {task_id} no encontrada",
+    )
+  return task
