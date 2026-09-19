@@ -24,7 +24,7 @@ class TaskService:
         return self.repository.list_all()
 
     def get_task(self, task_id: int) -> Task | None:
-        raise NotImplementedError("TODO: implementar get_task")
+        return self.repository.get_by_id(task_id)
 
     def create_task(self, body: TaskCreate) -> Task:
         # Pista: normalizá el título con .strip() antes de crear.
