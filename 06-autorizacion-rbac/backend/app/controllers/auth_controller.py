@@ -39,8 +39,13 @@ def _resolve_scope(user_role: Role, requested: str | None) -> str:
     default = ROLE_DEFAULT_SCOPES[user_role.value]
     if requested is None:
         return default
+
     if requested not in ("read", "read write"):
-        raise HTTPException(status_code=400, detail="Scope inválido. Usá 'read' o 'read write'.")
+        raise HTTPException(
+            status_code=400,
+            detail="Scope inválido. Usá 'read' o 'read write'."
+        )
+
     requested_parts = set(requested.split())
     default_parts = set(default.split())
     if not requested_parts.issubset(default_parts):

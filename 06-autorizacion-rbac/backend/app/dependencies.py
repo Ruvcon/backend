@@ -136,15 +136,18 @@ def require_scope(required: str) -> Callable:
         4. Devolvé `current_user`.
     """
     def checker(
-        request: Request,
         current_user: Annotated[User, Depends(get_current_user)],
+        request: Request,
     ) -> User:
         payload = getattr(request.state, "token_payload", {})
         token_scope = payload.get("scope", "")
+
         if required not in token_scope.split():
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="El token no tiene el scope necesario para esta operación",
             )
+
         return current_user
+
     return checker
