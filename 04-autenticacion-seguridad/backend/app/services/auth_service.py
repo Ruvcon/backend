@@ -45,7 +45,11 @@ class AuthService:
           3. Hasheá la contraseña con `hash_password(body.password)`.
           4. Devolvé `repository.create(email, hashed)`.
         """
-        raise NotImplementedError("TODO: implementar register_user")
+        email = body.email.lower().strip()
+        if self.repository.get_by_email(email):
+            return None
+        hashed_password = hash_password(body.password)
+        return self.repository.create(email, hashed_password)
 
     def authenticate_user(self, email: str, password: str) -> User | None:
         """
@@ -67,7 +71,18 @@ class AuthService:
         no existe, así el tiempo es constante. Investigá: ¿cómo lo harías?
         (Pista: `hash_password("dummy")` una sola vez, y verificá contra eso.)
         """
-        raise NotImplementedError("TODO: implementar authenticate_user")
+        normalized_email = email.lower().strip()
+        user = self.repository.get_by_email(normalized_email)
+
+        if user is None:
+            dummy_hash = hash_password("dummy-password")
+            verify_password(password, dummy_hash)
+            return None
+
+        if not verify_password(password, user.hashed_password):
+            return None
+
+        return user
 
     def count_users(self) -> int:
         # EJEMPLO resuelto — el health check usa este método.
