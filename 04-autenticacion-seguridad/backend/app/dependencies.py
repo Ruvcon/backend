@@ -83,4 +83,20 @@ def get_current_user(
     deja propagar la excepción del JWT; la traducción a status code la hacés
     vos acá. Es EXACTAMENTE el mismo criterio que el 404 del Módulo 03.
     """
-    raise NotImplementedError("TODO: implementar get_current_user")
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Credenciales inválidas",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+
+    try:
+        payload = decode_token(token)
+        user_id = int(payload["sub"])
+    except (InvalidTokenError, KeyError, TypeError, ValueError):
+        raise credentials_exception from None
+
+    user = repository.get_by_id(user_id)
+    if user is None:
+        raise credentials_exception
+
+    return user
